@@ -1,0 +1,29 @@
+version: '3.5'
+services:
+  project1:
+      restart: always
+      image: project1:latest
+      ports:
+        - '9000:80'
+      environment:
+        - MS_HTTP=80
+      networks:
+        - service-network
+  project2:
+      restart: always
+      build:
+        dockerfile: Dockerfile
+        context: ./
+      image: project2:latest
+      ports:
+        - '80:80'
+      depends_on:
+      - project1
+      environment:
+        - MS_HTTP=80
+        - MS_PROJECT1URL=http://project1
+      networks:
+        - service-network
+networks:
+  service-network:
+   name: service-network

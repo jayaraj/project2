@@ -1,0 +1,73 @@
+basePath: /api/v1
+consumes:
+- application/json
+definitions:
+  GetTopTenUsedWordsResponse:
+    properties:
+      data:
+        items:
+          $ref: '#/definitions/Occurance'
+        type: array
+        x-go-name: Data
+    type: object
+    x-go-package: project2/app/internal
+  Occurance:
+    properties:
+      count:
+        format: uint64
+        type: integer
+        x-go-name: Count
+      word:
+        type: string
+        x-go-name: Word
+    type: object
+    x-go-package: project2/app/internal
+  TopTenUsedWords:
+    properties:
+      text:
+        type: string
+        x-go-name: Text
+    type: object
+    x-go-package: project2/app/internal/httpservice
+host: localhost
+info:
+  description: Documentation of our project2 API.
+  title: project2.
+  version: 1.0.0
+paths:
+  /toptenwords:
+    post:
+      operationId: topTenWordsRequest
+      parameters:
+      - in: body
+        name: Body
+        schema:
+          $ref: '#/definitions/TopTenUsedWords'
+      responses:
+        "200":
+          $ref: '#/responses/topTenWordsResponse'
+        "400":
+          $ref: '#/responses/serviceError'
+        "500":
+          $ref: '#/responses/serviceError'
+      summary: Get top ten used words from the text.
+      tags:
+      - project2
+produces:
+- application/json
+responses:
+  serviceError:
+    description: ""
+    schema:
+      properties:
+        message:
+          type: string
+          x-go-name: Message
+      type: object
+  topTenWordsResponse:
+    description: ""
+    schema:
+      $ref: '#/definitions/GetTopTenUsedWordsResponse'
+schemes:
+- http
+swagger: "2.0"
